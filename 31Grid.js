@@ -7,16 +7,20 @@ let footer = document.querySelector(".footer");
 let showhere = document.querySelector(".showhere");
 let pageno = document.querySelector(".pageno");
 let sidebar = document.querySelector(".sidebarregion-flex");
-let bigName = document.querySelector(".bigName");
 let searchbutton = document.querySelector("#searchbutton");
 let searchName = document.querySelector("#searchName");
+let nameHeading = document.querySelector("#nameHeading");
+let table = document.querySelector("#table");
 
 let forBackButton = document.querySelector(".forward-backward");
 let previous = document.querySelector(".previous");
 let next = document.querySelector(".next");
 
+let currIndex = null;
+let maxIndex = null;
 var celebrityName = "";
-var celebData = "";
+var celebDatas = null;
+
 API = `https://api.api-ninjas.com/v1/celebrity?name=`;
 API_KEY = "ctbyjKRUQVdMAJzs4noDTg==VxNqZmoKrf4JX5nG";
 
@@ -30,14 +34,48 @@ requestObject = {
 
 searchbutton.addEventListener("click", (event) => {
   console.log("search button clicked...");
-  hideBackwardForwardButton();
+  resetEverything();
   celebrityName = searchName.value;
-  if (celebrityName != "" && celebrityName != undefined) {
+
+  if (celebrityName == "") {
+    displayTipMessage();
+  } else if (celebrityName != "" && celebrityName != undefined) {
     fetchData();
   }
 });
 
-console.log("javascript running.......");
+previous.addEventListener("click", (event) => {
+  nextCanHover();
+  if (currIndex > 0) {
+    if (--currIndex == 0) {
+      previousCantHover();
+    }
+    updateTexts();
+  }
+});
+
+next.addEventListener("click", (event) => {
+  previousCanHover();
+  if (currIndex < maxIndex) {
+    if (++currIndex == maxIndex) {
+      nextCantHover();
+    }
+    updateTexts();
+  }
+});
+
+displayTipMessage();
+
+function resetEverything() {
+  currIndex = null;
+  maxIndex = null;
+  showhere.innerText = "";
+  sidebar.innerHTML = "";
+  celebrityName = "";
+  nameHeading.innerHTML = "";
+  celebDatas = null;
+  updateNameHeading();
+}
 
 async function fetchData() {
   URL = API + celebrityName;
@@ -45,74 +83,53 @@ async function fetchData() {
   console.log(response.status);
   if (response.status == 200) {
     response.json().then((result) => {
-      processResponse(result);
+      celebDatas = result;
+      processResponse();
     });
   }
 }
 
-function processResponse(result) {
-  console.log("result: ", result);
-  if (result.length == 0) {
+function updateTexts() {
+  updateNameHeading();
+  updateDivContent();
+  updatePageNo();
+}
+
+function processResponse() {
+  console.log("result: ", celebDatas);
+  currIndex = 0;
+  maxIndex = celebDatas.length - 1;
+  if (maxIndex < 0) {
     bigName.innerText = "NO RESULT FOUND !!";
     return;
   } else {
-    updateResultList(result);
-    updateContentDiv(result);
-  }
-}
-
-function updateContentDiv(result) {
-  let ind = 0;
-  updadeIndexAndContent(result, ind);
-
-  if (result.length > 1) {
-    showBackwardForwardButton(result.length);
+    updateResultList();
+    updateTexts();
     previousCantHover();
-
-    next.addEventListener("click", (event) => {
-      previousCanHover();
-      if (ind < result.length - 1) {
-        if (++ind == result.length - 1) {
-          nextCantHover();
-        }
-        updatePageNo(ind + 1, result.length);
-        updadeIndexAndContent(result, ind);
-      }
-    });
-
-    previous.addEventListener("click", (event) => {
-      nextCanHover();
-      if (ind > 0) {
-        if (--ind == 0) {
-          previousCantHover();
-        }
-        updatePageNo(ind + 1, result.length);
-        updadeIndexAndContent(result, ind);
-      }
-    });
   }
 }
 
-function updadeIndexAndContent(result, ind) {
-  updateNameHeading(result[ind]["name"]);
-  showhere.innerText = JSON.stringify(result[ind], null, 2);
+function updateDivContent() {
+  showhere.innerHTML = ``;
+  str = ``;
+  for (let key in celebDatas[currIndex]) {
+    let th = `<td>${key}</td>`;
+    let td = ` <td>${celebDatas[currIndex][key]}</td> `;
+    let row = `<tr> ` + th + td + ` </tr>`;
+    str += row;
+  }
+
+  str = "<table class='table table-hover table-dark'>" + str + "</table>";
+
+  showhere.innerHTML += str;
 }
 
 function hideBackwardForwardButton() {
   forBackButton.style.display = "none";
 }
 
-function showBackwardForwardButton(pages) {
-  forBackButton.style.display = "flex";
-  startPageNo(pages);
-}
-
-function startPageNo(pages) {
-  pageno.innerText = "1" + "/" + pages;
-}
-
-function updatePageNo(ind, pages) {
-  pageno.innerText = ind + "/" + pages;
+function updatePageNo() {
+  pageno.innerText = `${currIndex + 1}` + "/" + `${maxIndex + 1}`;
 }
 
 function previousCantHover() {
@@ -131,22 +148,53 @@ function nextCanHover() {
   next.classList.remove("noHover");
 }
 
-function updateNameHeading(bName) {
-  bigName.innerText = bName.toUpperCase();
+function updateNameHeading() {
+  let bigName = document.createElement("h2");
+  bigName.classList.add("bigName");
+
+  if (celebDatas != null) {
+    bigName.innerText = celebDatas[currIndex]["name"].toUpperCase();
+    nameHeading.innerHTML = "";
+    nameHeading.appendChild(bigName);
+    setTimeout(() => {
+      bigName.style.fontSize = "4rem";
+    }, 100);
+  }
 }
 
-function updateResultList(results) {
-  sidebar.innerHTML = "";
-  for (let result of results) {
-    let str = `<button class="sidebaritem">${result["name"]}</button>`;
+function displayTipMessage() {
+  let bigName = document.createElement("h2");
+  bigName.classList.add("bigName");
+  bigName.innerText = "Enter Celebrity Name in Searchbox...";
+  nameHeading.innerHTML = "";
+  nameHeading.appendChild(bigName);
+  setTimeout(() => {
+    bigName.style.fontSize = "3rem";
+  }, 100);
+}
+
+function updateCursorState(ind) {
+  currIndex = ind;
+  if (currIndex == 0) previousCantHover();
+  else previousCanHover();
+
+  if (currIndex == maxIndex) nextCantHover();
+  else nextCanHover();
+}
+
+function updateResultList() {
+  for (let celeb of celebDatas) {
+    let str = `<button class="sidebaritem">${celeb["name"]}</button>`;
     sidebar.innerHTML += str;
   }
 
-  let buttons = document.querySelectorAll(".sidebaritem");
-
-  buttons.forEach((but, ind) => {
+  document.querySelectorAll(".sidebaritem").forEach((but, ind) => {
     but.addEventListener("click", () => {
-      updadeIndexAndContent(results, ind);
+      currIndex = ind;
+      updateNameHeading();
+      updateDivContent();
+      updatePageNo();
+      updateCursorState(ind);
     });
   });
 }

@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="31Grid.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
     <title>GRID</title>
   </head>
   <body>
@@ -17,23 +21,29 @@
       </div>
       <div class="bodyregion">
         <div class="sidebarregion">
-           <div class="search">
-              <input
-                id="searchName"
-                type="text"
-                placeholder="search celebrity name...."
-              />
-              <button id="searchbutton">Search</button>
-            </div>
-          <div class="sidebarregion-flex">
+          <div class="search">
+            <input
+              id="searchName"
+              type="text"
+              placeholder="search celebrity name...."
+            />
+            <button id="searchbutton">Search</button>
           </div>
+          <div class="sidebarregion-flex"></div>
         </div>
         <div class="contentregion">
-          <div id="nameHeading">
-            <h1 class="bigName"></h1>
-          </div>
+          <div class="forward-backward"></div>
+          <div id="nameHeading"></div>
           <div id="details">
-            <div class="showhere">Celebrity</div>
+            <div class="forward-backward"></div>
+            <div class="showhere">
+              <table id="table">
+                Table
+                <tr>
+                  <td>Abcd</td>
+                </tr>
+              </table>
+            </div>
             <div class="forward-backward">
               <a href="#" class="previous round">&#8249;</a>
               <div class="pageno"></div>
@@ -45,6 +55,8 @@
       <div class="footer">footer</div>
     </div>
     <script src="31Grid.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </body>
 </html>
 

@@ -85,10 +85,9 @@ body {
   grid-row: 1/9;
   grid-column: 1/4;
 
-  background-color: #716a5c;
+  background-color: black;
+  border: 0.5px solid white;
   z-index: 1;
-  border: 2px solid #5db7de;
-  border-radius: 5px;
 }
 
 .sidebarregion-flex {
@@ -113,7 +112,7 @@ body {
 #searchbutton {
   display: inline-block;
   min-height: 6%;
-  min-width: 29%;
+  min-width: 30%;
   /* border: 2px solid red; */
   z-index: 5;
 }
@@ -128,20 +127,22 @@ body {
 .sidebaritem {
   min-height: 8%;
   width: 100%;
-  background-color: #5db7de;
-  /* border: 1px solid black; */
+  color: white;
+  background-color: black;
+  border: 0.5px solid white;
   /* border: 2px solid red; */
 }
 
 .sidebaritem:hover {
   background-color: #24a7df;
+  box-shadow: 20% 2% 2%;
 }
 
 .contentregion {
   grid-row: 1/9;
   grid-column: 4/11;
 
-  background-color: #a39b8b;
+  /* background-color: #a39b8b; */
 
   display: flex;
   flex-direction: column;
@@ -152,28 +153,49 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 30%;
+  min-height: 23%;
   background-color: #f1e9db;
-  /* border: 2px solid red; */
+}
+
+.bigName {
+  color: navy;
+  font-size: 0;
+  transition: font-size 1s ease-out;
 }
 
 #details {
   min-height: 70%;
-  /* border: 2px solid red; */
+  border: 2px solid white;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: auto;
-  scrollbar-width: none;
+  /* overflow: auto;
+  scrollbar-width: none; */
 }
 
 .showhere {
-  min-height: 90%;
+  /* display: flex;
+  flex-direction: column; */
+
+  border: 2px solid green;
+  min-height: 86%;
+
+  color: #f6f2ec;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.table-dark {
+  color: black;
 }
 
 .forward-backward {
-  display: none;
+  border: 2px solid white;
+  background-color: black;
+  color: white;
+  height: 7%;
+  display: flex;
   flex-direction: row;
   justify-content: end;
 }
@@ -196,7 +218,7 @@ body {
 
   background-color: #f1f1f1;
   color: black;
-  padding: 8px 16px;
+  padding: 2px 4px;
 }
 
 .previous {
@@ -205,18 +227,21 @@ body {
 
   background-color: #f1f1f1;
   color: black;
-  padding: 8px 16px;
+  padding: 2px 4px;
 }
 
 .round {
   margin: 2px;
   border-radius: 50%;
   border: 1px solid rgb(75, 47, 47);
+  text-align: center;
 }
 
 .pageno {
   background-color: #f1f1f1;
-  padding: 8px 16px;
+  padding: 2px 4px;
+  color: black;
+  min-width: 3%;
 }
 
 /* ///////////////////////////// */
