@@ -11,6 +11,7 @@ let searchbutton = document.querySelector("#searchbutton");
 let searchName = document.querySelector("#searchName");
 let nameHeading = document.querySelector("#nameHeading");
 let table = document.querySelector("#table");
+let author = document.querySelector(".author");
 
 let forBackButton = document.querySelector(".forward-backward");
 let previous = document.querySelector(".previous");
@@ -31,6 +32,11 @@ requestObject = {
     "Content-Type": "application/json",
   },
 };
+
+author.addEventListener("click", () => {
+  showAuthorDetails();
+  showAuthorDiv();
+});
 
 searchbutton.addEventListener("click", (event) => {
   console.log("search button clicked...");
@@ -124,6 +130,29 @@ function updateDivContent() {
   showhere.innerHTML += str;
 }
 
+function showAuthorDiv() {
+  showhere.innerHTML = ``;
+  str = ``;
+  author = {
+    Name: "Abhijeet D",
+    Age: 25,
+    Institue: "VJTI, Mumbai",
+    Degree: "EXTC",
+    CPI: "8.32",
+    Experience: "1.5 Years as Software Engineer at Telstra",
+  };
+  for (let key in author) {
+    let th = `<td>${key}</td>`;
+    let td = ` <td>${author[key]}</td> `;
+    let row = `<tr> ` + th + td + ` </tr>`;
+    str += row;
+  }
+
+  str = "<table class='table table-hover table-dark'>" + str + "</table>";
+
+  showhere.innerHTML += str;
+}
+
 function hideBackwardForwardButton() {
   forBackButton.style.display = "none";
 }
@@ -148,6 +177,17 @@ function nextCanHover() {
   next.classList.remove("noHover");
 }
 
+function showAuthorDetails() {
+  let bigName = document.createElement("h2");
+  bigName.classList.add("bigName");
+
+  bigName.innerText = "Abhijeet".toUpperCase();
+  nameHeading.innerHTML = "";
+  nameHeading.appendChild(bigName);
+  setTimeout(() => {
+    bigName.style.fontSize = "4rem";
+  }, 100);
+}
 function updateNameHeading() {
   let bigName = document.createElement("h2");
   bigName.classList.add("bigName");
