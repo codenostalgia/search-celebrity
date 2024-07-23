@@ -80,6 +80,7 @@ function resetEverything() {
   celebrityName = "";
   nameHeading.innerHTML = "";
   celebDatas = null;
+  pageno.innerText = "";
   updateNameHeading();
 }
 
@@ -106,7 +107,7 @@ function processResponse() {
   currIndex = 0;
   maxIndex = celebDatas.length - 1;
   if (maxIndex < 0) {
-    bigName.innerText = "NO RESULT FOUND !!";
+    updateNameHeading();
     return;
   } else {
     updateResultList();
@@ -192,14 +193,21 @@ function updateNameHeading() {
   let bigName = document.createElement("h2");
   bigName.classList.add("bigName");
 
-  if (celebDatas != null) {
+  console.log("data123:", celebDatas);
+
+  if (celebDatas != null && celebDatas.length != 0) {
     bigName.innerText = celebDatas[currIndex]["name"].toUpperCase();
+  } else if (celebDatas.length == 0) {
+    bigName.innerText = "NO RESULT FOUND !!";
+  }
+
+  do {
     nameHeading.innerHTML = "";
     nameHeading.appendChild(bigName);
     setTimeout(() => {
       bigName.style.fontSize = "4rem";
     }, 100);
-  }
+  } while (false);
 }
 
 function displayTipMessage() {
